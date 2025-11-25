@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     simpleFoam; // <- openfoam solver used
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         2000; // 2000; 2024-05-04 change to 400 for quick check
+
+deltaT          1; // <- this is the timestep
+
+writeControl    timeStep;
+
+writeInterval   1000; // writes every 200th timestep
+
+purgeWrite      0; // =0 keeps all written outputs
+
+writeFormat     binary;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+functions
+{
+//    #include "streamlines"
+    #include "forceCoeffs"
+    #include "forces"
+//	#include "yPlus"
+}
+
+
+// ************************************************************************* //

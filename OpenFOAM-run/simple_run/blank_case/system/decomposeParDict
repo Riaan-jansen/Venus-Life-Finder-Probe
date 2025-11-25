@@ -1,0 +1,38 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      decomposeParDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+numberOfSubdomains  16; // 2024-05-04 was 12!!!
+
+// decomposer      simple; 29-09-25 !! changed vvv
+method		scotch;
+// distributor     ptscotch;
+// distributor     zoltan;
+// libs            ("libzoltanDecomp.so");
+
+//simpleCoeffs
+//{
+//    n               (1 1 2); // 2024-05-04 was (2 2 3)
+//   order           xyz;
+//}
+
+//zoltanCoeffs
+//{
+//    lb_method       hypergraph;
+//    lb_approach     partition;
+//}
+
+
+// ************************************************************************* //
