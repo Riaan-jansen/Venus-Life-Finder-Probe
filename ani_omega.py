@@ -82,7 +82,6 @@ def animate(filename, stl_path='probe_designs/base_design.stl'):
 
     t = omega_data[:,0]
 
-
     # this bit will probably go in favour of reading in an stl
     # L = 1.5
     # rod, R_total = init_rod(L)

@@ -43,75 +43,7 @@ def load_data(filename):
     # return cone, omega, pitch, mx, my, mz
     return variables, moments
 
-
-def plot_moments(filename):
-    """to plot moments"""
-    variables, moments = load_data(filename)
-
-    cone = variables[:,0]
-    omega = variables[:,1]
-    pitch = variables[:,2]
-
-    mx = moments[:,0]
-    my = moments[:,1]
-    mz = moments[:,2]
-
-    ####################################################################
-    # setting up subplots
-    fig = plt.figure(figsize=(12, 4))
-
-    # text object to tell the time on the video
-    time_text = fig.text(0.05, 0.8, "", fontsize=12)
-
-    # ax = fig.add_subplot(111, projection='3d')
-    
-    ax1 = fig.add_subplot(131, projection='3d')
-    ax2 = fig.add_subplot(132, projection='3d')
-    ax3 = fig.add_subplot(133, projection='3d')
-
-    # x = cone, y = omega, z = pitch
-    xmin = min(variables[:,0])
-    xmax = max(variables[:,0])
-
-    ymin = min(variables[:,1])
-    ymax = max(variables[:,1])
-
-    zmin = min(variables[:,2])
-    zmax = max(variables[:,2])
-
-    # for ax in (ax1, ax2, ax3):
-    #     ax.set_xlim(xmin,xmax)
-    #     ax.set_ylim(ymin,ymax)
-    #     ax.set_zlim(zmin,zmax)
-
-    # ax1.set_title("All over view")
-    # ax2.set_title("Top (Z)")
-    # ax3.set_title("Side (Y)")
-    ####################################################################
-
-    # setting up grid
-    N = 20
-
-    xs = np.linspace(xmin, xmax, N)
-    ys = np.linspace(ymin, ymax, N)
-    zs = np.linspace(zmin, zmax, N)
-
-    X, Y = np.meshgrid(xs, ys)
-    Z = zs
-
-    surface = ax.plot_surface(X, Y, Z, cmap='viridis', linewidth=0)
-
-    ax.set_zlim(zmin, zmax)
-    ax.zaxis.set_major_locator(LinearLocator(10))
-    # A StrMethodFormatter is used automatically
-    ax.zaxis.set_major_formatter('{x:.02f}')
-
-    # Add a color bar which maps values to colors.
-    fig.colorbar(surface, shrink=0.5, aspect=5)
-
-    plt.show()
-
-    ####################################################################
+####################################################################
 
 def interpolate(variables, moments):
 
@@ -129,11 +61,10 @@ def interpolate(variables, moments):
 
 def root_find(filename, moment_target=[0.0, 0.0, 0.0], weights=[1.0,1.0,1.0]):
     """input: filename and target moment\n
+    output: prints minimised values to terminal\n
     these are the equal and opposite moments from forces due to gravity!\n
     performs radial basis function interpolation to get variables as a 
-    continuum and then 
-    least squares or
-    root()"""
+    continuum and then least squares or root()"""
 
     # loading data into arrays
     moment_target = np.array(moment_target)
@@ -170,19 +101,14 @@ def root_find(filename, moment_target=[0.0, 0.0, 0.0], weights=[1.0,1.0,1.0]):
     bounds_max = variables.max(axis=0)
 
     # need leastsqrs here because the data contains no roots!!
-    res_ls = least_squares(residual_moment, x0, bounds=(bounds_min, bounds_max), xtol=1e-12, ftol=1e-12)
+    result_ls = least_squares(residual_moment, x0, bounds=(bounds_min, bounds_max), xtol=1e-12, ftol=1e-12)
 
-    print("#####    Least-squares result:    #####")
-    print(" - minimal variables:", res_ls.x)
-    print(" - residuals:", res_ls.fun)
-    print(" - success:", res_ls.success)
-
-
-# needs tidying
-# fpath = 'OF_data/kateForces.csv'
-# fpath2 = 'OF_data/forces_results.csv'
-# root_find(argv[0])
-
+    # in future this will return the solution as a list object
+    # potentially to then run more simulations around that area of interest.
+    print("#####    Minimisation result:    #####")
+    print(" - minimal variables:", result_ls.x)
+    print(" - residuals:", result_ls.fun)
+    print(" - success:", result_ls.success)
 
 
 if __name__ == '__main__':
