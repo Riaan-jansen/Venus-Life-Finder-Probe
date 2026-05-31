@@ -4,23 +4,47 @@
 
 Tools for the analysis of the LEVL probes for the Venus Life Finder mission
 
-## Features
+## Folders
 
-- **Rotation Animation**: Simulate and save animations of rigid body rotations.
-- **Multi-View Animation**: Generate animations with multiple perspectives.
-- **NDIM root finder for iterative OpenFOAM runs**
-- **1D root finder for connect masses rigid body problem**
-
+- **MINIMISER**: contains minimisation script and plotting tools
+- **cfd_data**: data collated in a format that works with the analysis tools
+- **baseCase**: final working openfoam simulation settings and running script
+- **other**: anything else is not important
 
 ## Requirements
 
-To run the code, install the required Python packages using the `requirements.txt` file:
+required to run minimiser.py:
+
+- import numpy as np
+- from scipy.interpolate import LinearNDInterpolator
+- from scipy.optimize import least_squares
+- from scipy.spatial.transform import Rotation as R
+- import matplotlib.pyplot as plt
+- import argparse
+
+
+### To run the minimal solution finder
 
 ```bash
-pip install -r requirements.txt
+python minimiser.py <filepath> <scaling> <window>
 ```
 
-### to run the code
+where filepath is the path to a valid .csv file containing openfoam results
+and scaling is the weighting applied to "force" over moments (this is to 
+compare similar magnitudes).
+Window argument tells the program what simulations to take into account
+(ignoring those with insufficient lift).
+
+# output
+
+output is to terminal (can be piped into file with $ ... > log )
+
+firstly reads the minimal combination from the table of ran simulations
+
+then reads the interpolated solution and associated residual forces and moments
+from net zero (how far away from steady state).
+
+### miscellaneous
 
 ## rotating probe animation
 
@@ -37,19 +61,6 @@ python ani_omega.py <data_file> [plot_option]
 plot options are 0: axes attached single view; 1: multi-view
 saves in /results/.
 
-###
-
-## NDIM root finder
-To run:
-
-```bash
-python root_finder.py 'OF_data/kateForces.csv'
-```
-
-output is to terminal
-
-
-###
 
 ## 1D root finder to two masses on a rod problem
 

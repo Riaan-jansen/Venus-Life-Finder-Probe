@@ -1,0 +1,13 @@
+# parameters file for CFD probe runs
+#
+# needs to be csv - no spaces - '#' comment
+#
+# pitch
+-5
+# omega
+180,360,540,720
+# cone
+10
+#terminal velocity
+1,3
+# end
